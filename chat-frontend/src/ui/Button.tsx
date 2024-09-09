@@ -1,11 +1,9 @@
-type ButtonParameters = {
-    children: React.ReactNode;
-};
+"use client";
 
-export default function Button({ children }: ButtonParameters) {
-    return (
-        <button className="bg-pallete2 text-white p-2 rounded-md hover:text-white text-xl shadow">
-            {children}
-        </button>
-    );
-}
+import styled from "styled-components";
+
+const Button = styled.button.attrs((props) => ({
+    className: `bg-pallete1 text-white p-2 rounded-md hover:text-white text-xl shadow hover:bg-pallete2 ${props.className}`,
+}))``;
+
+export default Button;
