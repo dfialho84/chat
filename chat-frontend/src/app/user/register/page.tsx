@@ -1,6 +1,7 @@
 import Heading from "@/ui/Heading";
 import Button from "@/ui/Button";
 import Input from "@/ui/Input";
+import StringPassword from "@/ui/StrongPassword";
 
 export default function Register() {
     return (
@@ -14,17 +15,20 @@ export default function Register() {
                 <label>Surname</label>
                 <Input type="text" />
                 <label>Nickname</label>
-                <div className="border-2 flex justify-center items-center space-x-2">
+                <div className="flex justify-center items-center space-x-2 mb-2">
                     <Input type="text" className="flex-1 mb-0" />
-                    <Button>Verify</Button>
+                    <Button className="text-md py-1">Verify</Button>
                 </div>
                 <label>Photo</label>
-                <Input type="file" />
+                <Input type="file" accept="image/*" />
                 <label>Password</label>
-                <Input type="password" />
+                <StringPassword />
                 <label>Repeat password</label>
-                <Input type="password" />
-                <Button>Submit</Button>
+                <Input type="password" autoComplete="new password" />
+
+                <div className="flex justify-center mt-4">
+                    <Button className="">Submit</Button>
+                </div>
             </form>
         </div>
     );
