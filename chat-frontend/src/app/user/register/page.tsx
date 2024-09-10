@@ -1,35 +1,133 @@
+"use client";
 import Heading from "@/ui/Heading";
 import Button from "@/ui/Button";
 import Input from "@/ui/Input";
-import StringPassword from "@/ui/StrongPassword";
+import StrongPassword from "@/ui/StrongPassword";
+import Form from "@/ui/Form";
+import {
+    useForm,
+    Controller,
+    SubmitHandler,
+    SubmitErrorHandler,
+} from "react-hook-form";
+import FieldControl from "@/ui/FieldControl";
+
+type RegisterForm = {
+    firstName: string;
+    lastName: string;
+    nickName: string;
+    photo: FileList;
+    password: string;
+    secondPassword: string;
+    passwordValidation: string;
+};
+
+const REQUIRED_MSG = "This field is required";
 
 export default function Register() {
-    return (
-        <div className="">
-            <form className="flex flex-col my-4 shadow-md rounded-md p-8 bg-pallete3 text-gray-600">
-                <Heading type="h1" className="text-center">
-                    Register Yourself
-                </Heading>
-                <label>First Name</label>
-                <Input type="text" />
-                <label>Surname</label>
-                <Input type="text" />
-                <label>Nickname</label>
-                <div className="flex justify-center items-center space-x-2 mb-2">
-                    <Input type="text" className="flex-1 mb-0" />
-                    <Button className="text-md py-1">Verify</Button>
-                </div>
-                <label>Photo</label>
-                <Input type="file" accept="image/png" />
-                <label>Password</label>
-                <StringPassword />
-                <label>Repeat password</label>
-                <Input type="password" autoComplete="new password" />
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: { errors },
+        setError,
+        clearErrors,
+    } = useForm<RegisterForm>();
+    const onSubmit: SubmitHandler<RegisterForm> = (data) => {
+        console.log(data);
+    };
+    const onError: SubmitErrorHandler<RegisterForm> = (errors) => {
+        console.log(errors);
+    };
 
-                <div className="flex justify-center mt-4">
-                    <Button className="">Submit</Button>
-                </div>
-            </form>
-        </div>
+    return (
+        <Form onSubmit={handleSubmit(onSubmit, onError)}>
+            <div>{errors.password?.message}</div>
+            <Heading type="h1" className="text-center">
+                Register Yourself
+            </Heading>
+
+            <FieldControl label="First Name" error={errors.firstName?.message}>
+                <Input
+                    type="text"
+                    {...register("firstName", { required: REQUIRED_MSG })}
+                />
+            </FieldControl>
+
+            <FieldControl label="Last Name" error={errors.lastName?.message}>
+                <Input
+                    type="text"
+                    {...register("lastName", { required: REQUIRED_MSG })}
+                />
+            </FieldControl>
+
+            <FieldControl label="Nick Name" error={errors.nickName?.message}>
+                <Input
+                    type="text"
+                    {...register("nickName", { required: REQUIRED_MSG })}
+                />
+            </FieldControl>
+
+            <FieldControl label="Photo" error={errors.photo?.message}>
+                <Input
+                    type="file"
+                    accept="image/png"
+                    {...register("photo", { required: REQUIRED_MSG })}
+                />
+            </FieldControl>
+
+            <FieldControl
+                label="Password"
+                error={
+                    errors.password?.message ||
+                    errors.passwordValidation?.message
+                }
+            >
+                <Controller
+                    name="password"
+                    control={control}
+                    rules={{ required: REQUIRED_MSG }}
+                    render={({ field }) => (
+                        <StrongPassword
+                            onBlur={field.onBlur}
+                            onChange={field.onChange}
+                            name={field.name}
+                            inputRef={field.ref}
+                            onError={({ error }) => {
+                                if (!error) {
+                                    console.log("Cleaning Errors");
+                                    clearErrors("passwordValidation");
+                                    return;
+                                }
+
+                                setError(
+                                    "passwordValidation",
+                                    {
+                                        type: "validated",
+                                        message: error,
+                                    },
+                                    { shouldFocus: true }
+                                );
+                            }}
+                        />
+                    )}
+                />
+            </FieldControl>
+
+            <FieldControl
+                label="Repeat Password"
+                error={errors.secondPassword?.message}
+            >
+                <Input
+                    type="password"
+                    autoComplete="new password"
+                    {...register("secondPassword")}
+                />
+            </FieldControl>
+
+            <div className="flex justify-center mt-4">
+                <Button type="submit">Submit</Button>
+            </div>
+        </Form>
     );
 }
