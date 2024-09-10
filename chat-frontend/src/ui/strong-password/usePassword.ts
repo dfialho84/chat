@@ -32,10 +32,10 @@ const checkErrors = (input: string): CheckResponse => {
     let score = 5;
     const scoreMap: { [key: number]: PasswordLevel } = {
         0: VERY_WEAK_PW,
-        1: WEAK_PW,
-        2: MODERATE_PW,
-        3: STRONG_PW,
-        4: VERY_STRONG_PW,
+        1: VERY_WEAK_PW,
+        2: WEAK_PW,
+        3: MODERATE_PW,
+        4: STRONG_PW,
         5: VERY_STRONG_PW,
     };
     const errors: string[] = [];

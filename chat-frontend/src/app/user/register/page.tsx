@@ -6,7 +6,7 @@ import StringPassword from "@/ui/StrongPassword";
 export default function Register() {
     return (
         <div className="">
-            <form className="flex flex-col my-4 shadow-md rounded-md p-4 bg-pallete3 text-gray-600">
+            <form className="flex flex-col my-4 shadow-md rounded-md p-8 bg-pallete3 text-gray-600">
                 <Heading type="h1" className="text-center">
                     Register Yourself
                 </Heading>

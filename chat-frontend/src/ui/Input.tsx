@@ -23,7 +23,7 @@ const Input = tw.input`
     border-none
     ${(props) =>
         props.type === "file" &&
-        "file:border-none file:bg-pallete2 file:text-pallete4 pl-0 pt-0 pb-0"}
+        "file:border-none file:bg-pallete2 file:text-pallete4 file:py-1 px-0 py-0"}
 `;
 
 export default Input;
