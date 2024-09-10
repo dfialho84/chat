@@ -20,7 +20,7 @@ export default function Register() {
                     <Button className="text-md py-1">Verify</Button>
                 </div>
                 <label>Photo</label>
-                <Input type="file" accept="image/*" />
+                <Input type="file" accept="image/png" />
                 <label>Password</label>
                 <StringPassword />
                 <label>Repeat password</label>

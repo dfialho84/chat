@@ -1,7 +1,4 @@
-"use client";
 import { useState } from "react";
-import Input from "./Input";
-import { MdOutlineErrorOutline } from "react-icons/md";
 
 type PasswordLevel = { text: string; color: string };
 const VERY_WEAK_PW = { text: "Very Weak", color: "bg-red-500" };
@@ -70,40 +67,22 @@ const checkErrors = (input: string): CheckResponse => {
     return { errors, level: scoreMap[score] };
 };
 
-export default function StringPassword() {
+type UpdateFunction = (text: string) => void;
+
+export default function usePassword(): [
+    string[],
+    PasswordLevel,
+    UpdateFunction
+] {
     const [errors, setErrors] = useState<string[]>([]);
     const [passwordLevel, setPasswordLevel] =
         useState<PasswordLevel>(VERY_WEAK_PW);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { errors, level } = checkErrors(event.target.value);
+    const update = (text: string) => {
+        const { errors, level } = checkErrors(text);
         setErrors(errors);
         setPasswordLevel(level);
     };
 
-    const finalClass = `absolute left-0 top-0 ${passwordLevel.color} text-white rounded-l-md py-1 px-2 w-28 text-center`;
-
-    return (
-        <div className="flex flex-col relative">
-            <Input
-                type="password"
-                autoComplete="new password"
-                onChange={handleChange}
-                className="flex-1 pl-[120px]"
-            />
-            <div className={finalClass}>{passwordLevel.text}</div>
-            {errors && (
-                <ul className="text-red-500 text-sm mb-4">
-                    {errors.map((error, index) => {
-                        return (
-                            <li key={index} className="">
-                                <MdOutlineErrorOutline className="inline-block align-text-bottom" />
-                                <span>{error}</span>
-                            </li>
-                        );
-                    })}
-                </ul>
-            )}
-        </div>
-    );
+    return [errors, passwordLevel, update];
 }
